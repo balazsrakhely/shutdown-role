@@ -13,6 +13,8 @@
   set_fact:
     _state: "{{ vm_state == 'restart' | ternary('reboot-guest', vm_state == 'on' | ternary('powered-on', 'shutdown-guest')) }}"
 
+- debug: var=_state
+
 - name: Power state change
   community.vmware.vmware_guest_powerstate:
     hostname: "{{ _vmware_host }}"
@@ -23,3 +25,6 @@
     name: "{{ vm_esxi_vm_name }}"
     state: "{{ _state }}"
     force: "{{ force | default(false, true) }}"
+  register: _powerstate_output
+
+- debug: var=_powerstate_output
