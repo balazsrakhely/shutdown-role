@@ -11,7 +11,7 @@
 
 - name: Map desired power state value to acceptable vmware powerstate input  
   set_fact:
-    _state: "{{ vm_state == 'restart' | ternary('reboot-guest', vm_state == 'on' | ternary('powered-on', 'shutdown-guest')) }}"
+    _state: "{{ (vm_state == 'restart') | ternary('reboot-guest', (vm_state == 'on') | ternary('powered-on', 'shutdown-guest')) }}"
 
 - debug: var=_state
 
