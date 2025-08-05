@@ -1,9 +1,9 @@
 ---
 - name: Get VMware vCenter credentials
   ansible.builtin.set_fact:
-    _vmware_host: lookup('ansible.builtin.env', 'VMWARE_HOST', default=undef())
-    _vmware_user: lookup('ansible.builtin.env', 'VMWARE_USER', default=undef())
-    _vmware_password: lookup('ansible.builtin.env', 'VMWARE_PASSWORD', default=undef())
+    _vmware_host: "{{ lookup('ansible.builtin.env', 'VMWARE_HOST', default=undef()) }}"
+    _vmware_user: "{{ lookup('ansible.builtin.env', 'VMWARE_USER', default=undef()) }}"
+    _vmware_password: "{{ lookup('ansible.builtin.env', 'VMWARE_PASSWORD', default=undef()) }}"
 
 - name: Validations
   ansible.builtin.include_tasks:
