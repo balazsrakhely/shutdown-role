@@ -7,7 +7,7 @@
 
 - name: Validations
   ansible.builtin.include_tasks:
-    file: validation.yaml
+    file: validate.yaml
 
 - name: Map desired power state value to acceptable vmware powerstate input  
   set_fact:
