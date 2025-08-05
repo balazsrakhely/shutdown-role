@@ -19,7 +19,7 @@
       - vm_esxi_vm_name | default('', true) | trim != ''
     fail_msg: "vm_esxi_vm_name must be present and non-empty"
 
-- name: Validate presence of vm name
+- name: Validate vm state
   ansible.builtin.assert:
     that:
       - vm_state | default('', true) | trim != ''
