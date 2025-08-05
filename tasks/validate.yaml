@@ -1,0 +1,27 @@
+---
+- name: Validate VMware vCenter credentials
+  ansible.builtin.assert:
+    that:
+      - _vmware_host | default('', true) | trim != ''
+      - _vmware_user | default('', true) | trim != ''
+      - _vmware_password | default('', true) | trim != ''
+    fail_msg: "vmware vcenter credentials must be present"
+
+- name: Validate presence of datacenter name
+  ansible.builtin.assert:
+    that:
+      - vm_esxi_datacenter | default('', true) | trim != ''
+    fail_msg: "vm_esxi_datacenter must be present and non-empty"
+
+- name: Validate presence of vm name
+  ansible.builtin.assert:
+    that:
+      - vm_esxi_vm_name | default('', true) | trim != ''
+    fail_msg: "vm_esxi_vm_name must be present and non-empty"
+
+- name: Validate presence of vm name
+  ansible.builtin.assert:
+    that:
+      - vm_state | default('', true) | trim != ''
+      - vm_state == 'on' or vm_state == 'off' or vm_state == 'restart' 
+    fail_msg: "vm_state must be present with a value in ['on', 'off', 'restart']"

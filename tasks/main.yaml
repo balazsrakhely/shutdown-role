@@ -1,0 +1,25 @@
+---
+- name: Get VMware vCenter credentials
+  ansible.builtin.set_fact:
+    _vmware_host: lookup('ansible.builtin.env', 'VMWARE_HOST', default=undef())
+    _vmware_user: lookup('ansible.builtin.env', 'VMWARE_USER', default=undef())
+    _vmware_password: lookup('ansible.builtin.env', 'VMWARE_PASSWORD', default=undef())
+
+- name: Validations
+  ansible.builtin.include_tasks:
+    file: validation.yaml
+
+- name: Map desired power state value to acceptable vmware powerstate input  
+  set_fact:
+    _state: "{{ vm_state == 'restart' | ternary('reboot-guest', vm_state == 'on' | ternary('powered-on', 'shutdown-guest')) }}"
+
+- name: Power state change
+  community.vmware.vmware_guest_powerstate:
+    hostname: "{{ _vmware_host }}"
+    username: "{{ _vmware_user }}"
+    password: "{{ _vmware_password }}"
+    datacenter: "{{ vm_esxi_datacenter }}"
+    folder: "{{ vm_esxi_folder }}"
+    name: "{{ vm_esxi_vm_name }}"
+    state: "{{ _state }}"
+    force: "{{ force | default(false, true) }}"
